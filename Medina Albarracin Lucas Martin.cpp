@@ -1,6 +1,6 @@
 #include <stdio.h>
 int main() {
-    int datos[30][10][7] = {0},monto[30] = {0},contador_jug_sincal = 0,jugador, juego, calificacion;
+    int datos[30][10][7] = {0},monto[30] = {0},contador_jug_sincal = 0,jugador, juego, calificacion,i=0,j=0;
     printf("Ingrese los datos de los jugadores (ingrese 0 para finalizar):\n");
     while (1) {
         printf("Jugador(del 1 al 30): ");
@@ -21,14 +21,14 @@ int main() {
         datos[jugador - 1][juego - 1][1]++; // Incrementar el contador de calificaciones del jugador en el juego
     }
     printf("Ingrese el valor de los premios de los juegos:\n");
-    for (int i = 0; i < 10; i++) {
+    for (i = 0; i < 10; i++) {
         printf("Premio para el juego %d: ", i + 1);
         scanf("%d", &premios[i]);
     }
     printf("los puntajes finales y montos cobrados:\n");
-    for (int i = 0; i < 30; i++) {
+    for ( i = 0; i < 30; i++) {
         printf("Jugador %d:\n", i + 1);
-        for (int j = 0; j <10; j++) {
+        for ( j = 0; j <10; j++) {
             if (datos[i][j][1] > 0) {
                 int promedio = datos[i][j][0] / datos[i][j][1];
                 printf("Juego %d: Puntaje final = %d\n", j + 1, promedio);
