@@ -1,0 +1,88 @@
+#include <stdio.h>
+#define numero_clases 4
+#define numero_horarios 5
+
+main() {
+    int cupo[numero_clases] = {10, 10, 10, 10};
+    int asistencia[numero_clases][numero_horarios] = {0};
+    char clases[numero_clases][20] = {"Top Ride", "Zumba", "Entrenamiento", "Abdominales"};
+    int tot_asic = 0;
+    int ganancia = 0;
+    int horario, clase;
+    int horario_vac = 0;
+    int clase_sinasic = 0;
+
+    // se registran las asistencias
+    for (horario = 0; horario < numero_horarios; horario++) {
+        printf("Horario %d:\n", horario + 1);
+
+        int haycupo = 0; // Variable para verificar si quedan cupos en algún horario
+
+        for (clase = 0; clase < numero_clases; clase++) {
+            int asistentes;
+
+            printf("Ingrese la cantidad de asistentes para la clase '%s': ", clases[clase]);
+            scanf("%d", &asistentes);
+
+            // Verificar si hay cupo en la clase
+            if (asistentes <= cupo[clase]) {
+                asistencia[clase][horario] = asistentes;
+                cupo[clase] -= asistentes;
+                tot_asic += asistentes;
+                ganancia += asistentes * ((horario == 2) ? 700 : (horario < 2) ? 700 * 0.8 : 700 * 1.15);
+
+                haycupo = 1;
+            } else {
+                printf("No hay cupo suficiente para la clase '%s' en este horario.\n", clases[clase]);
+            }
+        }
+
+        if (!haycupo)
+            horario_vac = 1;
+    }
+
+    // Se informa la clase sin asistentes
+    printf("\nClase sin asistentes:\n");
+    for (clase = 0; clase < numero_clases; clase++) {
+        int asistentesClase = 0;
+        for (horario = 0; horario < numero_horarios; horario++) {
+            asistentesClase += asistencia[clase][horario];
+        }
+        if (asistentesClase == 0) {
+            printf("%s\n", clases[clase]);
+            clase_sinasic = 1;
+        }
+    }
+
+    if (!clase_sinasic)
+        printf("No hay clases sin asistentes.\n");
+
+    // Se informa los horarios sin clases
+    printf("\nLos horarios sin clases son:\n");
+    for (horario = 0; horario < numero_horarios; horario++) {
+        int hayclas = 0;
+        for (clase = 0; clase < numero_clases; clase++) {
+            if (asistencia[clase][horario] > 0) {
+                hayclas = 1;
+                break;
+            }
+        }
+        if (!hayclas)
+            printf("Horario %d\n", horario + 1);
+    }
+
+    // Informa la cantidad de personas que fueron a cada clase
+    printf("\nLa cantidad de persona que asistieron a cada clase son:\n");
+    for (clase = 0; clase < numero_clases; clase++) {
+        int totalClase = 0;
+        for (horario = 0; horario < numero_horarios; horario++) {
+            totalClase += asistencia[clase][horario];
+        }
+        printf("%s: %d\n", clases[clase], totalClase);
+    }
+
+    // se informa la ganancia total ganada
+    printf("\nGanancia total: $%d\n", ganancia);
+
+    return 0;
+}
